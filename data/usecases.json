@@ -1,0 +1,34 @@
+[
+  {
+    "id": "saas-app",
+    "name": "Standard SaaS Application",
+    "description": "Foundational stack for subscription-based web products.",
+    "required_categories": ["auth", "database", "payments", "email", "hosting"],
+    "recommended_stack": ["clerk", "supabase", "stripe", "resend", "vercel"],
+    "merit_score": 98
+  },
+  {
+    "id": "ai-chatbot",
+    "name": "Conversational AI Agent",
+    "description": "High-performance stack for real-time AI agents and assistants.",
+    "required_categories": ["ai", "database", "hosting"],
+    "recommended_stack": ["groq", "supabase", "vercel"],
+    "merit_score": 96
+  },
+  {
+    "id": "marketing-engine",
+    "name": "Marketing Automation Hub",
+    "description": "Scale-focused stack for newsletters and user engagement.",
+    "required_categories": ["email", "storage", "hosting"],
+    "recommended_stack": ["sendgrid", "cloudinary", "netlify"],
+    "merit_score": 92
+  },
+  {
+    "id": "content-platform",
+    "name": "Digital Content & Media",
+    "description": "Optimized for e-commerce or media-heavy content platforms.",
+    "required_categories": ["storage", "payments", "database", "hosting"],
+    "recommended_stack": ["cloudinary", "lemonsqueezy", "mongodb-atlas", "vercel"],
+    "merit_score": 94
+  }
+]
