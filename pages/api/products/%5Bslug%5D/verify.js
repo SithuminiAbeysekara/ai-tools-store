@@ -1,4 +1,4 @@
-import products from '../../../data/products.json'
+import products from '../../../../data/products.json'
 
 export default function handler(req, res) {
   const { slug } = req.query
