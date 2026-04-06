@@ -30,47 +30,63 @@ export default async function handler(req, res) {
   `).join('\n---\n')
 
   const prompt = `
-You are an expert software architect helping developers pick the right tools.
+You are a Lead Software Architect. Help the user select the best tools from the catalog for their specific requirements.
+CRITICAL INSTRUCTIONS:
+1. Return your response ONLY in the following JSON format.
+2. The "intro" field MUST be a single, concise sentence giving a high-level summary of the architecture. DO NOT put tool names or details in the intro.
+3. All specific tool recommendations, "why" reasons, "pricing" tiers and "limitations" MUST go into the "tools" array.
+4. If a tool isn't in the catalog but is essential, suggest the closest match and mention it in the "why".
 
-Here is the available tool catalog:
+Format:
+{
+  "intro": "One expert summary sentence here.",
+  "tools": [
+    {
+      "name": "Exact Product Name from Catalog",
+      "why": "Detailed engineering reason for selection",
+      "pricing": "Specific tier (e.g., Free Tier, Hobby, $20/mo)",
+      "limitations": "Specific technical or budget constraints to note"
+    }
+  ]
+}
+
+Available catalog:
 ${catalogContext}
 
-Developer requirement: "${requirement}"
-
-Based ONLY on the tools in the catalog above, recommend the best tools for this requirement.
-For each recommended tool explain:
-1. Why you picked it
-2. Which pricing tier fits
-3. Any limitations to be aware of
-
-Be specific and practical. If multiple tools fit, compare them.
+User requirement: "${requirement}"
 `
 
   try {
     const completion = await groq.chat.completions.create({
       model: 'llama-3.3-70b-versatile',
-      messages: [
-        {
-          role: 'user',
-          content: prompt
-        }
-      ],
-      temperature: 0.3,
+      messages: [{ role: 'user', content: prompt }],
+      response_format: { type: 'json_object' },
+      temperature: 0.1,
       max_tokens: 1024
     })
 
-    const recommendation = completion.choices[0].message.content
+    const parsedResponse = JSON.parse(completion.choices[0].message.content)
 
     res.status(200).json({
       requirement,
-      recommendation,
+      intro: parsedResponse.intro,
+      tools: parsedResponse.tools,
       relevant_products: products.filter(p =>
-        recommendation.toLowerCase().includes(p.name.toLowerCase())
+        parsedResponse.tools.some(t => t.name.toLowerCase().includes(p.name.toLowerCase()))
       ).map(p => ({
         name: p.name,
         slug: p.slug,
         category: p.category,
-        rating: p.rating
+        rating: p.rating,
+        description: p.description,
+        trust_score: p.trust_score,
+        attributes: p.attributes,
+        pricing: p.pricing,
+        category_rank: p.category_rank,
+        best_for: p.best_for,
+        verified: p.verified,
+        review_count: p.review_count,
+        gtin: p.gtin
       }))
     })
   } catch (error) {

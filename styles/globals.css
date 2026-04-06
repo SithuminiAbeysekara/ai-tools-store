@@ -157,26 +157,49 @@ h3 { font-size: 1.25rem; font-weight: 700; color: var(--secondary); }
 
 .btn-premium:hover { background: var(--primary-hover); transform: scale(1.02); }
 
-/* Metadata Badges */
-.badge-solid {
-  display: inline-flex;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: #f1f5f9;
-  color: #475569;
+/* Glassmorphism Lite & Premium Elevation */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
 }
 
-.rating-badge {
-  background: #fffbeb;
-  color: #92400e;
-  padding: 6px 12px;
-  border-radius: 9999px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.shadow-premium {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 20px 25px -5px rgba(0, 0, 0, 0.05);
 }
+
+/* Spacing Utilities */
+.gap-premium { gap: 3.5rem; }
+.p-premium { padding: 4rem; }
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
+/* Refined Badges */
+.badge-architect {
+  background: var(--primary);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.1em;
+}
+
+.badge-why { background: #eef2ff; color: #4338ca; }
+.badge-pricing { background: #f0fdf4; color: #15803d; }
+.badge-limit { background: #fff7ed; color: #c2410c; }

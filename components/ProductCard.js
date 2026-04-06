@@ -92,7 +92,7 @@ export default function ProductCard({ product }) {
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2.5rem' }}>
-        {product.best_for.slice(0, 3).map(tag => (
+        {product.best_for?.slice(0, 3).map(tag => (
           <span key={tag} style={{ background: '#e0e7ff', color: '#4338ca', padding: '6px 12px', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', borderRadius: '9999px' }}>
             {tag}
           </span>
