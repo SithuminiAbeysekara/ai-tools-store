@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import ProductCard from '../components/ProductCard'
-import products from '../data/products.json'
+import { getProducts } from '../lib/db'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -260,10 +260,11 @@ export default function Home({ allProducts }) {
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
+  const allProducts = await getProducts()
   return {
     props: {
-      allProducts: products
+      allProducts: allProducts || []
     }
   }
 }

@@ -1,6 +1,7 @@
-import products from '../../data/products.json'
+import { getProducts } from '../../lib/db'
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  const products = await getProducts()
   // Agentic Merit Comparison (Klarna Inspired)
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('X-Comparison-Protocol', 'Merit-Merit-Side-by-Side-1.0')

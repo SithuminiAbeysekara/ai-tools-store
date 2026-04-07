@@ -1,5 +1,5 @@
 import Groq from 'groq-sdk'
-import products from '../../data/products.json'
+import { getProducts } from '../../lib/db'
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY
@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
+  const products = await getProducts()
   const { requirement } = req.body
 
   if (!requirement) {
@@ -36,6 +37,7 @@ CRITICAL INSTRUCTIONS:
 2. The "intro" field MUST be a single, concise sentence giving a high-level summary of the architecture. DO NOT put tool names or details in the intro.
 3. All specific tool recommendations, "why" reasons, "pricing" tiers and "limitations" MUST go into the "tools" array.
 4. If a tool isn't in the catalog but is essential, suggest the closest match and mention it in the "why".
+5. Return your response in JSON format.
 
 Format:
 {

@@ -1,6 +1,7 @@
-import products from '../../data/products.json'
+import { getProducts } from '../../lib/db'
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  const products = await getProducts()
   // Agent Discovery Logging
   console.log({
     timestamp: new Date().toISOString(),

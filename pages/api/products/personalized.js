@@ -1,6 +1,7 @@
-import products from '../../../data/products.json'
+import { getProducts } from '../../../lib/db'
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  const products = await getProducts()
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' })
   }

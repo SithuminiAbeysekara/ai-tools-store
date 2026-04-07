@@ -1,4 +1,5 @@
-import products from '../../data/products.json'
+import { getProducts, getProductBySlug } from '../../lib/db'
+import { enrichToolData } from '../../lib/enrichment'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -178,16 +179,20 @@ export default function ToolPage({ product }) {
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
               <div className="bento-card" style={{ padding: '3rem' }}>
-                <h3 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Ecosystem Alignment</h3>
-                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <h3 style={{ marginBottom: '2rem', fontSize: '1.5rem' }}>Ecosystem Alignment</h3>
+                <ul style={{ paddingLeft: '1.5rem', listStyle: 'square' }}>
                   {product.best_for.map(tag => (
-                    <span key={tag} className="badge-solid" style={{ padding: '10px 20px', fontSize: '0.8125rem', borderRadius: '9999px' }}>{tag}</span>
+                    <li key={tag} style={{ marginBottom: '1.25rem', color: '#475569', fontSize: '1.125rem', fontWeight: '600' }}>{tag}</li>
                   ))}
-                </div>
+                </ul>
               </div>
               <div className="bento-card" style={{ padding: '3rem' }}>
-                <h3 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Discovery Connectivity</h3>
-                <p style={{ color: '#64748b', fontSize: '1.125rem', fontWeight: '700', lineHeight: '1.7' }}>{product.integrates_with.join(' · ')}</p>
+                <h3 style={{ marginBottom: '2rem', fontSize: '1.5rem' }}>Discovery Connectivity</h3>
+                <ul style={{ paddingLeft: '1.5rem', listStyle: 'square' }}>
+                  {product.integrates_with.map(item => (
+                    <li key={item} style={{ marginBottom: '1.25rem', color: '#475569', fontSize: '1.125rem', fontWeight: '600' }}>{item}</li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
@@ -217,14 +222,15 @@ export default function ToolPage({ product }) {
   )
 }
 
-export async function getStaticPaths() {
-  return {
-    paths: products.map(p => ({ params: { slug: p.slug } })),
-    fallback: 'blocking'
+export async function getServerSideProps({ params }) {
+  let product = await getProductBySlug(params.slug)
+  
+  if (!product) {
+    return { notFound: true }
   }
-}
 
-export async function getStaticProps({ params }) {
-  const product = products.find(p => p.slug === params.slug) || null
+  // 🚀 Dynamically Enrich with LLM if core metadata is missing
+  product = await enrichToolData(product)
+
   return { props: { product } }
 }

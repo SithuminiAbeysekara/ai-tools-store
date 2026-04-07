@@ -1,4 +1,4 @@
-import products from '../data/products.json'
+import { getProducts } from '../lib/db'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
@@ -23,6 +23,7 @@ function generateSitemap(products) {
 export default function Sitemap() {}
 
 export async function getServerSideProps({ res }) {
+  const products = await getProducts()
   const sitemap = generateSitemap(products)
   res.setHeader('Content-Type', 'text/xml')
   res.write(sitemap)

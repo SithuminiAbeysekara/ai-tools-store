@@ -1,5 +1,5 @@
 import Groq from 'groq-sdk'
-import products from '../../../data/products.json'
+import { getProducts } from '../../../lib/db'
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY
@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' })
   }
 
+  const products = await getProducts()
   const { query } = req.body
 
   if (!query) {

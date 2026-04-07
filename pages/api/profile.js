@@ -1,6 +1,7 @@
-import products from '../../data/products.json'
+import { getProducts } from '../../lib/db'
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  const products = await getProducts()
   // Agent Capability Discovery (V2 Reasoning Layer)
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('X-Agent-Protocol', 'UCP-2.0-Reasoning-Layer')

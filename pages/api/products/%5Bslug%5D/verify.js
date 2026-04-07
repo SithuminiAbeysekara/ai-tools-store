@@ -1,8 +1,8 @@
-import products from '../../../../data/products.json'
+import { getProductBySlug } from '../../../../lib/db'
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const { slug } = req.query
-  const product = products.find(p => p.slug === slug)
+  const product = await getProductBySlug(slug)
 
   if (!product) {
     return res.status(404).json({ error: 'Product not found' })

@@ -4,8 +4,8 @@ export default function ProductCard({ product }) {
   if (!product) return null
 
   return (
-    <div className="bento-card">
-      {/* 🧬 Enhanced Agentic JSON-LD (All Protocols Integration) */}
+    <div className="bento-card" style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* 🧬 Enhanced Agentic JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -24,7 +24,7 @@ export default function ProductCard({ product }) {
             },
             "offers": {
               "@type": "Offer",
-              "price": product.pricing.paid.replace(/[^0-9.]/g, '') || "0",
+              "price": product.pricing?.paid?.replace(/[^0-9.]/g, '') || "0",
               "priceCurrency": "USD",
               "availability": "https://schema.org/InStock"
             },
@@ -43,65 +43,132 @@ export default function ProductCard({ product }) {
         }}
       />
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-            <h3 style={{ fontSize: '1.5rem', color: '#0f172a', fontWeight: '800' }}>{product.name}</h3>
-            {product.verified && (
-              <span title="AP2 Verified Data" style={{ background: '#ecfdf5', color: '#059669', fontSize: '0.625rem', fontWeight: '900', padding: '2px 6px', borderRadius: '4px', border: '1px solid #10b981' }}>
-                VERIFIED
-              </span>
-            )}
-          </div>
-          <span className="badge-solid">{product.category}</span>
+      {/* Header Section */}
+      <div style={{ marginBottom: '1.75rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+          <span style={{ 
+            fontSize: '0.65rem', 
+            fontWeight: '900', 
+            color: '#6366f1', 
+            textTransform: 'uppercase', 
+            letterSpacing: '0.15em',
+            background: '#eef2ff',
+            padding: '4px 10px',
+            borderRadius: '6px'
+          }}>
+            {product.category}
+          </span>
+          {product.verified && (
+            <span title="AP2 Verified Data" style={{ 
+              background: '#10b981', 
+              color: 'white', 
+              fontSize: '0.6rem', 
+              fontWeight: '900', 
+              padding: '4px 8px', 
+              borderRadius: '6px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
+            }}>
+              ✓ Verified
+            </span>
+          )}
         </div>
-        <div style={{ textAlign: 'right' }}>
-          <div className="rating-badge" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
-            <span style={{ fontSize: '0.875rem' }}>RATING: {product.rating} / 5</span>
-            <span style={{ fontSize: '0.625rem', opacity: 0.7, fontWeight: '700' }}>{(product.review_count || 0).toLocaleString()} REVIEWS</span>
+        <h3 style={{ fontSize: '1.85rem', color: '#0f172a', fontWeight: '900', letterSpacing: '-0.03em', margin: '0 0 1rem 0' }}>
+          {product.name}
+        </h3>
+        
+        {/* Stats Row */}
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '1.5rem', 
+          padding: '0.75rem 1rem', 
+          background: '#f8fafc', 
+          borderRadius: '12px',
+          border: '1px solid #f1f5f9'
+        }}>
+          <div>
+            <div style={{ fontSize: '0.6rem', color: '#94a3b8', fontWeight: '900', textTransform: 'uppercase', marginBottom: '2px' }}>Rating</div>
+            <div style={{ fontSize: '0.95rem', fontWeight: '800', color: '#0f172a' }}>
+              {product.rating} <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>/ 5</span>
+            </div>
           </div>
-          <div style={{ fontSize: '0.75rem', color: '#4f46e5', fontWeight: '900', marginTop: '0.75rem' }}>TRUST SCORE: {product.trust_score || 0}%</div>
+          <div style={{ width: '1px', height: '24px', background: '#e2e8f0' }}></div>
+          <div>
+            <div style={{ fontSize: '0.6rem', color: '#94a3b8', fontWeight: '900', textTransform: 'uppercase', marginBottom: '2px' }}>Reviews</div>
+            <div style={{ fontSize: '0.95rem', fontWeight: '800', color: '#0f172a' }}>
+              {(product.review_count || 0).toLocaleString()}
+            </div>
+          </div>
+          <div style={{ width: '1px', height: '24px', background: '#e2e8f0' }}></div>
+          <div>
+            <div style={{ fontSize: '0.6rem', color: '#6366f1', fontWeight: '900', textTransform: 'uppercase', marginBottom: '2px' }}>Trust</div>
+            <div style={{ fontSize: '0.95rem', fontWeight: '800', color: '#6366f1' }}>
+              {product.trust_score || 0}%
+            </div>
+          </div>
         </div>
       </div>
 
       <p style={{ 
         color: '#475569', 
-        fontSize: '1.0625rem', 
-        lineHeight: '1.8', 
-        marginBottom: '2.5rem', 
+        fontSize: '1rem', 
+        lineHeight: '1.7', 
+        marginBottom: '2rem', 
         display: '-webkit-box', 
         WebkitLineClamp: '3', 
         WebkitBoxOrient: 'vertical', 
         overflow: 'hidden',
-        minHeight: '5.4rem'
+        minHeight: '5.1rem'
       }}>
         {product.description}
       </p>
 
-      <div style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '3rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-          <div>
-            <div style={{ fontSize: '0.625rem', color: '#94a3b8', fontWeight: '900', textTransform: 'uppercase', marginBottom: '4px' }}>LATENCY PROFILE</div>
-            <div style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.875rem' }}>{product.attributes.latency.toUpperCase()}</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '0.625rem', color: '#94a3b8', fontWeight: '900', textTransform: 'uppercase', marginBottom: '4px' }}>API PROTOCOL</div>
-            <div style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.875rem' }}>{product.attributes.api_type}</div>
-          </div>
+      {/* Attributes Grid */}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: '1fr 1fr', 
+        gap: '0.75rem', 
+        marginBottom: '2rem'
+      }}>
+        <div style={{ background: '#f1f5f9', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+          <div style={{ fontSize: '0.6rem', color: '#64748b', fontWeight: '900', textTransform: 'uppercase', marginBottom: '4px' }}>Latency</div>
+          <div style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.85rem' }}>{product.attributes.latency.toUpperCase()}</div>
+        </div>
+        <div style={{ background: '#f1f5f9', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+          <div style={{ fontSize: '0.6rem', color: '#64748b', fontWeight: '900', textTransform: 'uppercase', marginBottom: '4px' }}>Protocol</div>
+          <div style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.85rem' }}>{product.attributes.api_type}</div>
         </div>
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2.5rem' }}>
-        {product.best_for?.slice(0, 3).map(tag => (
-          <span key={tag} style={{ background: '#e0e7ff', color: '#4338ca', padding: '6px 12px', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', borderRadius: '9999px' }}>
+        {product.best_for?.slice(0, 2).map(tag => (
+          <span key={tag} style={{ 
+            background: 'white', 
+            color: '#64748b', 
+            padding: '5px 12px', 
+            fontSize: '0.7rem', 
+            fontWeight: '700', 
+            textTransform: 'uppercase', 
+            borderRadius: '8px',
+            border: '1px solid #e2e8f0'
+          }}>
             {tag}
           </span>
         ))}
       </div>
 
       <div style={{ marginTop: 'auto' }}>
-        <Link href={`/tool/${product.slug}`} className="btn-premium" style={{ display: 'block', textAlign: 'center', textDecoration: 'none', padding: '1.25rem' }}>
-          Explore Full Technical Specs
+        <Link href={`/tool/${product.slug}`} className="btn-premium" style={{ 
+          display: 'block', 
+          textAlign: 'center', 
+          textDecoration: 'none', 
+          padding: '1.25rem',
+          borderRadius: '12px',
+          fontSize: '0.9rem',
+          letterSpacing: '0.02em'
+        }}>
+          Technical Specification
         </Link>
       </div>
     </div>
